@@ -7,6 +7,10 @@ This program is used to control 12 relays which turn on the lightboxes
  by whh.
  2015/2/7
 
+
+2015/3/13
+add sound
+
  */
 #include "pin_define.h"
 #include "arduino_debug.h"
@@ -19,7 +23,7 @@ This program is used to control 12 relays which turn on the lightboxes
 int i, j;
 int in_signal;
 // the setup routine runs once when you press reset:
-
+int intro_flag = 0;
 
 unsigned char led_on(void);
 unsigned char led_off(void);
@@ -47,7 +51,7 @@ void setup()
   }
   pinMode(PIN_OUT_DOOR, OUTPUT);
   digitalWrite(PIN_OUT_DOOR, HIGH);
-  
+
   //sound pin initialization
   pinMode(snd_error, OUTPUT);
   digitalWrite(snd_error, HIGH);
@@ -57,8 +61,8 @@ void setup()
   digitalWrite(snd_login, HIGH);
   pinMode(snd_auth, OUTPUT);
   digitalWrite(snd_auth, HIGH);
-  
-  
+
+
   /*INPUT PIN
    	#define	EFFECT_0	14
    	#define	EFFECT_1	15
@@ -71,6 +75,7 @@ void loop()
 {
   //start_effect();
   int val, pre_val;
+
   while (1)
   {
     val = read_effect();
@@ -122,6 +127,8 @@ unsigned char read_effect()
   {
     //answer is right
     digitalWrite(snd_login, LOW);
+    delay(50);
+    digitalWrite(snd_login, HIGH);
     right_effect();
     digitalWrite(PIN_OUT_DOOR, LOW);
     return 7;
@@ -136,7 +143,18 @@ unsigned char read_effect()
   {
     // answer is wrong
     digitalWrite(snd_error, LOW);
+    Sln("error LOW");
+    delay(50);
+    digitalWrite(snd_error, HIGH);
+    Sln("error high");
     wrong_effect();
+    if ( intro_flag == 0)//when player hit the floor button first time they will get some hints
+    {
+      digitalWrite(snd_intro, LOW);
+      delay(50);
+    digitalWrite(snd_intro, HIGH);
+      intro_flag = 1;
+    }
 
     return 3;
   }
@@ -144,6 +162,8 @@ unsigned char read_effect()
   {
     //open door
     digitalWrite(snd_auth, LOW);
+    delay(50);
+    digitalWrite(snd_auth, HIGH);
     digitalWrite(PIN_OUT_DOOR, LOW);
 
     //delay(60000);

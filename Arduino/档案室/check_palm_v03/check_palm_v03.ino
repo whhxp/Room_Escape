@@ -3,8 +3,9 @@
  */
 #define DEBUG 1
 #define PUSHER_DEBUG 0
-#define time1   5000
-#define time2   5000
+#define time1   28240   //from middle level up to top,28.24sec
+#define time2   18500    //down to middle level,18.5sec
+#define time3   24810    //from bottom to middle, 24.81sec
 
 #define S(n) Serial.print(n)
 #define Sln(nn) Serial.println(nn)
@@ -54,7 +55,7 @@ void setup(){
   pinMode(pass_key_power,OUTPUT);
   digitalWrite(pass_key_power,HIGH);
   digitalWrite(pusher_up_pin,HIGH);
-  digitalWrite(pusher_down_pin,HIGH);
+  digitalWrite(pusher_down_pin,LOW);
 
 }
 
@@ -141,7 +142,7 @@ void init_output()
   {
     check[k]=0;
   }
-  pusher_down();
+  pusher_stop();
   //delay(10000);
   digitalWrite(inner_light_pin,HIGH);
   digitalWrite(output_pin,HIGH);
