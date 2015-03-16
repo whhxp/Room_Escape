@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring Map For led_wall
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1) 数据类型关键字
+#######################################
+
+led_wall ? ? ? ?KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2) 方法类型关键字
+#######################################
+
+Init ? ? ? ?KEYWORD2
+DataSend? ? ? ?KEYWORD2
+DataLock? ? ? ?KEYWORD2
+send2wall? ? ? ?KEYWORD2
+
+#######################################
+# Constants (LITERAL1) ?常量类型关键字
+#######################################
+
+_lePin? ? ? ?LITERAL1
+_clkPin? ? ? ?LITERAL1
+_oePin?LITERAL1
+_sdiPin?LITERAL1
