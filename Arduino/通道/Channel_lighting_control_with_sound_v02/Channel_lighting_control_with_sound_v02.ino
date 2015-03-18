@@ -13,7 +13,7 @@ add sound
 
 2015/3/18
 changed plan
-I use the mp3 modual directly through serial port instead of plugging another sound control board
+I use the mp3 module directly through serial port instead of plugging another sound control board
 --by whh
  */
 #include "pin_define.h"
