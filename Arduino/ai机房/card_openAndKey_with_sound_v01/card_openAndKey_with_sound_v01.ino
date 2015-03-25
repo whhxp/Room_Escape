@@ -7,6 +7,16 @@
  */
 #define DEBUG 1
 #define BIG 5
+
+#include "SoftwareSerial1.h"
+#include "cmd.h"
+#define S(n) Serial.print(n)
+#define Sln(nn) Serial.println(nn)
+#define enter() S("enter function\t");Sln(__FUNCTION__)
+
+#define pin_rx 10
+#define pin_tx 11
+SoftwareSerial mySerial(pin_rx, pin_tx); // RX, TX
 //set key numbers    as   input pin
 const int key[4] =
 {
@@ -23,6 +33,9 @@ const int PushPin =  2;
 
 //relay pin to control all 220v components such as lights and speaker
 const int relay_pin=12;
+
+const int speaker_pin=6;
+
 // set password
 const char password[8] =
 {
@@ -43,15 +56,6 @@ unsigned char alarm();
 unsigned char turnoff_lights();
 unsigned char open_door();
 
-#include "SoftwareSerial1.h"
-#include "cmd.h"
-#define S(n) Serial.print(n)
-#define Sln(nn) Serial.println(nn)
-#define enter() S("enter function\t");Sln(__FUNCTION__)
-
-#define pin_rx 10
-#define pin_tx 11
-SoftwareSerial mySerial(pin_rx, pin_tx); // RX, TX
 unsigned char set_track(unsigned char *cmd, unsigned char n)
 {
   cmd[4] = n;
@@ -96,29 +100,40 @@ unsigned char play_sound(unsigned char num)
 {
   enter();
   mySerial.setTX(pin_tx);
-  set_track(setTrack0, num);
+  set_track(setTrack1, num);
   digitalWrite(pin_tx, LOW);
   return 0;
 }
 void setup()
 {
+  mySerial.begin(9600);
 	Serial.begin(9600);
 	// initialize the LED pin as an output:
 	pinMode(PushPin, OUTPUT);
 	pinMode(DoorOpen, OUTPUT);
-	pinMode(MusicPlay1, OUTPUT);
-	pinMode(MusicPlay2, OUTPUT);
+	//pinMode(MusicPlay1, OUTPUT);
+	//pinMode(MusicPlay2, OUTPUT);
 	pinMode(relay_pin, OUTPUT);
+        pinMode(speaker_pin, OUTPUT);
 
 }
 
 void loop()
 {
 	reset_all();
+        //play_sound(2);
+        //
 	while (card_vertify() != 1)
 	{
 	}
 	push_drawer();
+
+
+
+
+
+
+
 reenter:
 	while ( enter_passwd() == 1)
 	{
@@ -129,6 +144,7 @@ reenter:
 		else
 		{
 			alarm();
+                        continue;
                         goto reenter;
 		}
 	}
@@ -137,7 +153,7 @@ reenter:
 		play_voice(1);
 		turnoff_lights();
 		open_door();
-
+                digitalWrite(speaker_pin, LOW);
                 while(1);
 	}
         goto reenter;
@@ -214,9 +230,10 @@ unsigned char reset_all()
 	 pinMode(MusicPlay2, OUTPUT);
 	 pinMode(relay_pin, OUTPUT);
 	 */
+        digitalWrite(speaker_pin, HIGH);
 	digitalWrite(relay_pin, LOW);
-	digitalWrite(MusicPlay1, HIGH);
-	digitalWrite(MusicPlay2, HIGH);
+	//digitalWrite(MusicPlay1, HIGH);
+	//digitalWrite(MusicPlay2, HIGH);
 	digitalWrite(DoorOpen, HIGH);
 	digitalWrite(PushPin, HIGH);
 #if DEBUG
@@ -351,7 +368,7 @@ unsigned char open_door()
 #if DEBUG
 	Serial.print("door opened\n");
 #endif
-	delay(600000);
+	//delay(600000);
 	return 0;
 }
 
