@@ -40,9 +40,7 @@ int light_door_close = 12;			//定义关门按钮为12脚
 //int voice_out [4] = {
 //  8,9,10,11};	//定义声音输出为 8,9,10,11 管脚 分别输出4中音效
 // I use software serial command instead of voice pinout
-#define pin_rx 10
-#define pin_tx 11
-SoftwareSerial mySerial(pin_rx, pin_tx); // RX, TX
+
 
 #define snd_beep       2
 #define snd_elevator   1
@@ -61,6 +59,9 @@ int led_out [9] = {
 #define SDI 7 						// DATA
 
 int Password_open[5];    //按键对应的密码位
+#define pin_rx 10
+#define pin_tx 11
+SoftwareSerial mySerial(pin_rx, pin_tx); // RX, TX
 unsigned char set_track(unsigned char *cmd, unsigned char n)
 {
   cmd[4] = n;
@@ -185,6 +186,8 @@ int password_check_and_opendoor (void)
   {
     Serial.println("good luck:doorOpen!");
     play_sound(snd_elevator);
+    writequeue1();
+    delay(6500);
     water_lights ();
     play_sound(snd_opendoor);
     digitalWrite(light_door_open, LOW);

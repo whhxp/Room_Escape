@@ -62,7 +62,7 @@ unsigned char set_track(unsigned char *cmd, unsigned char n)
 unsigned char adj_vol(unsigned char n)
 {
   adjVol15[4] = n;
-  send_cmd(adjVol15);
+  send_cmd(adjVol30);
   return 0;
 }
 

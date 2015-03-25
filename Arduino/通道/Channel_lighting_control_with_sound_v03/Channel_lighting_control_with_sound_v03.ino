@@ -194,7 +194,8 @@ unsigned char read_effect()
     play_sound(snd_login);
     right_effect();
     digitalWrite(PIN_OUT_DOOR, LOW);
-    //play_sound(snd_auth);
+    play_sound(snd_auth);
+    while(1);
     return 7;
   }
   else if (effect_num[0] == 0 && effect_num[1] == 0 && effect_num[2] == 0)
